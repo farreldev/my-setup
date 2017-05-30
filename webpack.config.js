@@ -26,19 +26,26 @@ let config = {
 		},
 		devServer: {
 			contentBase: PUBLIC_DIR,
+			compress: true,
 			open: true,
-			hot: true
+			stats: "minimal",
+			hot: true,
+			port: 3333
 		},
 		module: {
 			rules: [
 				{
 					test: /\.js$/,
 					exclude: /node_modules/,
+					use: "babel-loader"
+				},
+				{
+					test: /\.pug$/,
 					use: [
 						{
-							loader: "babel-loader",
+							loader: "pug-loader",
 							options: {
-								presets: ["es2015", "react", "stage-2"]
+								pretty: false
 							}
 						}
 					]
@@ -68,7 +75,7 @@ let config = {
 				// 	collapseWhitespace: true
 				// },
 				hash: true,
-			 	template: "index.html"
+			 	template: "index.pug"
 			})
 		]
 };
