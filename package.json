@@ -4,8 +4,8 @@
   "main": "src/src.js",
   "scripts": {
     "start": "yarn run dev",
-    "dev": "webpack -d && webpack-dev-server",
-    "prod": "rimraf ./public/* && set NODE_ENV=production && webpack -p"   
+    "dev": "webpack-dev-server",
+    "prod": "rimraf ./public/*&&SET NODE_ENV=production&&webpack -p"
   },
   "license": "MIT",
   "dependencies": {

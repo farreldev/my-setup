@@ -3,21 +3,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
-const SRC_DIR = path.resolve(__dirname, './src');
-const PUBLIC_DIR = path.resolve(__dirname, './public');
+const SRC_DIR = path.resolve(__dirname, 'src');
+const PUBLIC_DIR = path.resolve(__dirname, 'public');
 
-var inProd = process.env.NODE_ENV !== "production";
-var cssDev = ["style-loader","css-loader","sass-loader"];
-var cssProd = ExtractTextPlugin.extract({
+let inProd = process.env.NODE_ENV === "production";
+let cssDev = ["style-loader","css-loader","sass-loader"];
+let cssProd = ExtractTextPlugin.extract({
 	fallback: "style-loader",
 	use: ["css-loader","sass-loader"],
 	publicPath: PUBLIC_DIR
 });
 
-console.log(inProd);
-
-var styleConfig = inProd ? cssProd : cssDev;
-
+let styleConfig = inProd ? cssProd : cssDev;
 let config = {
 	context: SRC_DIR,
 		entry: {
@@ -29,10 +26,8 @@ let config = {
 		},
 		devServer: {
 			contentBase: PUBLIC_DIR,
-			inline: true,
 			open: true,
-			hot: true,
-			port: 5051
+			hot: true
 		},
 		module: {
 			rules: [
