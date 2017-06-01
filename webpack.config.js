@@ -5,27 +5,26 @@ const path = require('path');
 
 const SRC_DIR = path.resolve(__dirname, 'src');
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
-
 let inProd = process.env.NODE_ENV === "production";
 let cssDev = ["style-loader","css-loader","sass-loader"];
 let cssProd = ExtractTextPlugin.extract({
 	fallback: "style-loader",
 	use: ["css-loader","sass-loader"],
-	publicPath: PUBLIC_DIR
+	publicPath: "../"
 });
 
 let styleConfig = inProd ? cssProd : cssDev;
 let config = {
-	context: SRC_DIR,
+		context: SRC_DIR,
 		entry: {
 			app: './src.js'
 		},
 		output: {
 			path: PUBLIC_DIR,
-			filename: "app/[name].source.js",
+			filename: "app/[name].source.js"
 		},
 		devServer: {
-			contentBase: PUBLIC_DIR,
+			contentBase: SRC_DIR,
 			compress: true,
 			open: true,
 			stats: "minimal",
@@ -40,20 +39,14 @@ let config = {
 					use: "babel-loader"
 				},
 				{
-					test: /\.pug$/,
+					test: /\.(jpe?g|png|gif|svg)$/i,
 					use: [
-						{
-							loader: "pug-loader",
-							options: {
-								pretty: false
-							}
-						}
-					]
+						"file-loader?name=img/[name].[ext]",
+						"image-webpack-loader"
+						]
 				},
-				{
-					test: /\.s[ac]ss$/,
-					use: styleConfig
-				}
+				{test: /\.pug$/, use: "pug-loader?pretty=true"},
+				{test: /\.s[ac]ss$/, use: styleConfig}
 			]
 		},
 		plugins: [
@@ -63,19 +56,16 @@ let config = {
 					'process.env': {
 						'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
 					}
-        }),
+			}),
 			new ExtractTextPlugin({
 				filename: "css/style.css",
 				disable: !inProd,
 				allChunks: true
 			}),
 			new HtmlWebpackPlugin({
-				title: "React JS Application",
-				// minify: {
-				// 	collapseWhitespace: true
-				// },
-				hash: true,
-			 	template: "index.pug"
+				title: "React JS Applicatio",
+				hash: false,
+			 	template: "./index.pug"
 			})
 		]
 };
